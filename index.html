@@ -1,0 +1,68 @@
+import React, { useState } from "react";
+import { Controlled as CodeMirror } from "react-codemirror2";
+import "codemirror/lib/codemirror.css";
+import "codemirror/mode/javascript/javascript";
+
+function CodeLearningAssistant() {
+  const [code, setCode] = useState("// Write your code here...");
+  const [analysis, setAnalysis] = useState("");
+  const [tutorialStep, setTutorialStep] = useState(0);
+
+  const tutorials = [
+    "Step 1: Understand variables in programming.",
+    "Step 2: Learn about functions.",
+    "Step 3: Debugging basics.",
+    "Step 4: Explore error types.",
+  ];
+
+  // Fake code analysis function
+  function analyzeCode() {
+    // This should be replaced with real code analysis logic
+    if (code.includes("console.log")) {
+      setAnalysis("Found console.log statement. Good for debugging!");
+    } else if (code.trim() === "") {
+      setAnalysis("Your code editor is empty. Start typing!");
+    } else {
+      setAnalysis("No errors detected.");
+    }
+  }
+
+  function nextTutorial() {
+    setTutorialStep((prev) => (prev + 1) % tutorials.length);
+  }
+
+  return (
+    <div style={{ padding: 20 }}>
+      <h1>Code Learning Assistant</h1>
+      <CodeMirror
+        value={code}
+        options={{
+          mode: "javascript",
+          lineNumbers: true,
+          tabSize: 2,
+        }}
+        onBeforeChange={(editor, data, value) => {
+          setCode(value);
+        }}
+      />
+      <button onClick={analyzeCode} style={{ marginTop: 10 }}>
+        Analyze Code
+      </button>
+      <div style={{ marginTop: 20 }}>
+        <h2>Analysis Results:</h2>
+        <pre>{analysis}</pre>
+      </div>
+      <div style={{ marginTop: 20 }}>
+        <h2>Interactive Tutorial</h2>
+        <p>{tutorials[tutorialStep]}</p>
+        <button onClick={nextTutorial}>Next Step</button>
+      </div>
+      <div style={{ marginTop: 20 }}>
+        <h2>Curiosity Generator</h2>
+        <p>Did you know? Debugging is like detective work for programmers!</p>
+      </div>
+    </div>
+  );
+}
+
+export default CodeLearningAssistant;
